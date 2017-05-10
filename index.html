@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio</title>
+</head>
+<body>
+    <h1>Iniciar Sesion</h1>
+    <form action="/iniciar_sesion" method="post">
+        Nombre de usuario: <input type="text" id="username" name="username" required/>
+        <br/>
+        Contraseña: <input type="password" id="password" name="password" required/>
+        <br/>
+        <input type="submit" value="Iniciar Sesion">
+    </form>
+    <h1>Nuevo Usuario</h1>
+    <form action="/nuevo_usuario" method="post">
+        Nuevo nombre de usuario: <input type="text" id="nuevo_username" name="nuevo_username" required>
+        <br/>
+        Nueva contraseña: <input type="password" id="nuevo_password" name="nuevo_password" required>
+        <br/>
+        <input type="submit" value="Nuevo Usuario">
+    </form>
+</body>
+</html>

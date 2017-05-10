@@ -1,0 +1,20 @@
+{% extends "baseListado.html" %}
+{% block title %}
+Listado Pruebas
+{% endblock %}
+
+{% block cabecera %}
+    <h1>Listado Pruebas</h1>
+{% endblock %}
+
+{% block nuevo %}
+<a href="/nueva_prueba">Nueva Prueba</a>
+{% endblock %}
+
+{% block listar %}
+<ul>
+    {% for prueba in pruebas %}
+    <li><a href="/prueba?key={{prueba.key()}}">{{ prueba.lugar }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

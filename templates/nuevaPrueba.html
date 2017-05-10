@@ -1,0 +1,26 @@
+{% extends "baseNuevo.html" %}
+{% block title %}
+Nueva Prueba
+{% endblock %}
+
+{% block cabecera %}
+    <h1>Nueva Pruebas</h1>
+{% endblock %}
+
+{% block formulario %}
+<form action="/crear_prueba" method="post" enctype="multipart/form-data">
+    Lugar: <input type="text" id="lugar" name="lugar" required/>
+    <br/>
+    Fecha: <input type="date" id="fecha" name="fecha" required/>
+    <br/>
+    Distancia nado: <input type="number" step="any" id="distancia_nado" name="distancia_nado" required/>
+    <br/>
+    Distancia bici: <input type="number" step="any" id="distancia_bici" name="distancia_bici" required/>
+    <br/>
+    Distancia carrera: <input type="number" step="any" id="distancia_carrera" name="distancia_carrera" required/>
+    <br/>
+    Foto: <input type="file" id="foto" name="foto" required/>
+    <br/>
+    <input type="submit" value="Crear Prueba"/>
+</form>
+{% endblock %}
