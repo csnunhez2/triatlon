@@ -1,10 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "baseEntidad.html" %}
+{% block title %}
+Prueba
+{% endblock %}
 
-</body>
-</html>
+{% block cabecera %}
+    <h1>Prueba {{ prueba.lugar }}</h1>
+{% endblock %}
+
+{% block datos %}
+<ul>
+    <li>Fecha: {{ prueba.fecha }}</li>
+    <li>Distancia Nado: {{ prueba.distancia_nado }}</li>
+    <li>Distancia Bici: {{ prueba.distancia_bici }}</li>
+    <li>Distancia Carrera: {{ prueba.distancia_carrera }}</li>
+    <li>Foto: <img src="data:image/png;base64,{{ prueba.foto.encode('base64') }}"></li>
+</ul>
+{% endblock %}
+{% block comentarios %}
+<h1>Crear Comentario</h1>
+<form action="/nuevo_comentario">
+    <input type="hidden" id="prueba" name="prueba" value="{{ prueba.key.id() }}"/>
+    Titulo: <input type="text" id="titulo" name="titulo"/>
+    Comentario: <textarea id="comentario" name="comentario"></textarea>
+    <input type="submit" value="Crear Comentario"/>
+</form>
+
+<h1>Comentarios</h1>
+{% for c in comentarios %}
+<ul>
+    <li>Titulo: {{ c.titulo }}<br/>
+        Autor: {{ c.autor }}<br/>
+        Fecha: {{ c.fecha }}<br/>
+        Valoracion: {{ c.valoracion }}<br/>
+        Texto: {{ c.texto }}<br/>
+        <form action="valorar_comentario">
+            <input type="hidden" id="id" name="id" value="{{ prueba.key.id() }}" />
+            <input type="hidden" id="id_comentario" name="id_comentario" value="{{ c.key.id() }}" />
+            Valorar(0-5): <input type="number" min="0" max="5" id="valoracion" name="valoracion"/>
+            <input type="submit" value="Enviar Valoracion"/>
+        </form><br/>
+        {% if c.autor==usuario %}
+        <a href="/eliminar_comentario?id={{ prueba.key.id() }}&key={{ c.key.id() }}">Eliminar Comentario</a><br/>
+        {% endif %}</li>
+</ul>
+{% endfor %}
+{% endblock %}

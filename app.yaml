@@ -9,9 +9,10 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
-- url: /
-  static_files: index.html
-  upload: index\.html
+- url: /profile/.*
+  script: user_profile.app
+  login: required
+  auth_fail_action: redirect
 
 - url: .*
   script: main.app

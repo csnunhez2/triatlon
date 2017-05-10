@@ -14,7 +14,7 @@ Listado Pruebas
 {% block listar %}
 <ul>
     {% for prueba in pruebas %}
-    <li><a href="/prueba?key={{prueba.key()}}">{{ prueba.lugar }}</a></li>
+    <li><a href="/prueba?key={{prueba.key.id()}}">{{ prueba.lugar }}</a></li>
     {% endfor %}
 </ul>
 {% endblock %}
