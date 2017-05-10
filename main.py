@@ -152,6 +152,8 @@ class Eliminar_Prueba(webapp2.RequestHandler):
         if c.count() == 0:
             p = Prueba.get_by_id(int(id_prueba))
             p.key.delete()
+            comentarios = Comentario.query(Comentario.parent_id == int(id_prueba)).fetch(keys_only=True)
+            ndb.delete_multi(comentarios)
 
         time.sleep(1)
 
@@ -263,6 +265,8 @@ class Eliminar_Triatleta(webapp2.RequestHandler):
         if c.count() == 0:
             t = Triatleta.get_by_id(int(id_triatleta))
             t.key.delete()
+            comentarios = Comentario.query(Comentario.parent_id == int(id_triatleta)).fetch(keys_only=True)
+            ndb.delete_multi(comentarios)
 
         time.sleep(1)
 
