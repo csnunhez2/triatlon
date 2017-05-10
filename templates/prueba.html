@@ -4,6 +4,7 @@ Prueba
 {% endblock %}
 
 {% block cabecera %}
+<a href="/listadoPruebas">Volver</a>
     <h1>Prueba {{ prueba.lugar }}</h1>
 {% endblock %}
 
@@ -18,7 +19,7 @@ Prueba
 {% endblock %}
 {% block comentarios %}
 <h1>Crear Comentario</h1>
-<form action="/nuevo_comentario">
+<form action="/nuevo_comentario_prueba">
     <input type="hidden" id="prueba" name="prueba" value="{{ prueba.key.id() }}"/>
     Titulo: <input type="text" id="titulo" name="titulo"/>
     Comentario: <textarea id="comentario" name="comentario"></textarea>
@@ -33,14 +34,14 @@ Prueba
         Fecha: {{ c.fecha }}<br/>
         Valoracion: {{ c.valoracion }}<br/>
         Texto: {{ c.texto }}<br/>
-        <form action="valorar_comentario">
+        <form action="valorar_comentario_prueba">
             <input type="hidden" id="id" name="id" value="{{ prueba.key.id() }}" />
             <input type="hidden" id="id_comentario" name="id_comentario" value="{{ c.key.id() }}" />
             Valorar(0-5): <input type="number" min="0" max="5" id="valoracion" name="valoracion"/>
             <input type="submit" value="Enviar Valoracion"/>
         </form><br/>
         {% if c.autor==usuario %}
-        <a href="/eliminar_comentario?id={{ prueba.key.id() }}&key={{ c.key.id() }}">Eliminar Comentario</a><br/>
+        <a href="/eliminar_comentario_prueba?id={{ prueba.key.id() }}&key={{ c.key.id() }}">Eliminar Comentario</a><br/>
         {% endif %}</li>
 </ul>
 {% endfor %}

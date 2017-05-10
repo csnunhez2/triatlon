@@ -1,0 +1,27 @@
+{% extends "baseNuevo.html" %}
+{% block title %}
+Nueva Prueba
+{% endblock %}
+
+{% block cabecera %}
+<a href="/listadoTriatleta">Volver</a>
+    <h1>Nuevo Triatleta</h1>
+{% endblock %}
+
+{% block formulario %}
+<form action="/crear_triatleta" method="post" enctype="multipart/form-data">
+    Nombre: <input type="text" id="nombre" name="nombre" required/>
+    <br/>
+    Equipo: <input type="text" id="equipo" name="equipo" required/>
+    <br/>
+    Talla: <input type="number" step="any" id="talla" name="talla" required/>
+    <br/>
+    Peso: <input type="number" step="any" id="peso" name="peso" required/>
+    <br/>
+    Biografia: <textarea id="biografia" name="biografia" required></textarea>
+    <br/>
+    Foto: <input type="file" id="foto" name="foto" required/>
+    <br/>
+    <input type="submit" value="Crear Triatleta"/>
+</form>
+{% endblock %}

@@ -4,7 +4,7 @@ Listado Pruebas
 {% endblock %}
 
 {% block cabecera %}
-    <h1>Listado Pruebas</h1>
+<h1>Listado Pruebas</h1>
 {% endblock %}
 
 {% block nuevo %}
@@ -14,7 +14,8 @@ Listado Pruebas
 {% block listar %}
 <ul>
     {% for prueba in pruebas %}
-    <li><a href="/prueba?key={{prueba.key.id()}}">{{ prueba.lugar }}</a></li>
+    <li><a href="/prueba?key={{prueba.key.id()}}">{{ prueba.lugar }}</a>
+        <a href="/eliminar_prueba?key={{prueba.key.id()}}">Eliminar Prueba</a></li>
     {% endfor %}
 </ul>
 {% endblock %}

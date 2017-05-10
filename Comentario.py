@@ -10,4 +10,4 @@ class Comentario(ndb.Model):
         lambda self: float(float(sum(self.valoraciones)) / float(len(self.valoraciones))) if len(
             self.valoraciones) > 0 else None)
     texto = ndb.TextProperty(required=True)
-    id_prueba = ndb.IntegerProperty(required=True)
+    parent_id = ndb.IntegerProperty(required=True)

@@ -7,5 +7,15 @@ Listado Triatletas
     <h1>Listado Triatletas</h1>
 {% endblock %}
 
+{% block nuevo %}
+<a href="/nuevo_triatleta">Nuevo Triatleta</a>
+{% endblock %}
+
 {% block listar %}
+<ul>
+    {% for triatleta in triatletas %}
+    <li><a href="/triatleta?key={{triatleta.key.id()}}">{{ triatleta.nombre }}</a>
+        <a href="/eliminar_triatleta?key={{triatleta.key.id()}}">Eliminar Triatleta</a></li>
+    {% endfor %}
+</ul>
 {% endblock %}

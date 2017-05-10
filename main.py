@@ -84,7 +84,7 @@ class getPrueba(webapp2.RequestHandler):
 
         p = Prueba.get_by_id(int(id))
 
-        c = Comentario.query(Comentario.id_prueba == int(id))
+        c = Comentario.query(Comentario.parent_id == int(id))
 
         values = {
             "prueba": p,
@@ -95,10 +95,8 @@ class getPrueba(webapp2.RequestHandler):
         self.response.write(jinja.render_template("prueba.html", **values))
 
 
-class Crear_Comentario(webapp2.RequestHandler):
+class Crear_Comentario_Prueba(webapp2.RequestHandler):
     def get(self):
-        jinja = jinja2.get_jinja2(app=self.app)
-
         titulo = self.request.get("titulo")
         texto = self.request.get("comentario")
         id_prueba = self.request.get("prueba")
@@ -106,7 +104,7 @@ class Crear_Comentario(webapp2.RequestHandler):
         c = Comentario()
         c.titulo = titulo
         c.texto = texto
-        c.id_prueba = int(id_prueba)
+        c.parent_id = int(id_prueba)
         c.fecha = datetime.datetime.now().date()
         c.autor = users.get_current_user().email()
         c.put()
@@ -116,10 +114,8 @@ class Crear_Comentario(webapp2.RequestHandler):
         self.redirect("/prueba?key=" + id_prueba)
 
 
-class Valorar_Comentario(webapp2.RequestHandler):
+class Valorar_Comentario_Prueba(webapp2.RequestHandler):
     def get(self):
-        jinja = jinja2.get_jinja2(app=self.app)
-
         valoracion = self.request.get("valoracion")
         id = self.request.get("id")
         id_comentario = self.request.get("id_comentario")
@@ -132,10 +128,9 @@ class Valorar_Comentario(webapp2.RequestHandler):
 
         self.redirect("/prueba?key=" + id)
 
-class Eliminar_Comentario(webapp2.RequestHandler):
-    def get(self):
-        jinja = jinja2.get_jinja2(app=self.app)
 
+class Eliminar_Comentario_Prueba(webapp2.RequestHandler):
+    def get(self):
         id = self.request.get("id")
         id_comentario = self.request.get("key")
 
@@ -145,6 +140,134 @@ class Eliminar_Comentario(webapp2.RequestHandler):
         time.sleep(1)
 
         self.redirect("/prueba?key=" + id)
+
+
+class Eliminar_Prueba(webapp2.RequestHandler):
+    def get(self):
+        id_prueba = self.request.get("key")
+
+        c = Comentario.query(
+            ndb.AND(Comentario.parent_id == int(id_prueba), Comentario.autor != users.get_current_user().email()))
+
+        if c.count() == 0:
+            p = Prueba.get_by_id(int(id_prueba))
+            p.key.delete()
+
+        time.sleep(1)
+
+        self.redirect("/listadoPruebas")
+
+
+class Nuevo_Triatleta(webapp2.RequestHandler):
+    def get(self):
+        jinja = jinja2.get_jinja2(app=self.app)
+        self.response.write(jinja.render_template("nuevoTriatleta.html"))
+
+
+class Crear_Triatleta(webapp2.RequestHandler):
+    def post(self):
+        nombre = self.request.get("nombre")
+        equipo = self.request.get("equipo")
+        talla = self.request.get("talla")
+        peso = self.request.get("peso")
+        biografia = self.request.get("biografia")
+        foto = self.request.get("foto")
+
+        t = Triatleta()
+        t.nombre = nombre
+        t.equipo = equipo
+        t.talla = float(talla)
+        t.peso = float(peso)
+        t.biografia = biografia
+        t.foto = images.resize(foto, 128, 128)
+        t.put()
+
+        time.sleep(1)
+
+        self.redirect("/listadoTriatletas")
+
+
+class getTriatleta(webapp2.RequestHandler):
+    def get(self):
+        jinja = jinja2.get_jinja2(app=self.app)
+
+        id = self.request.get("key")
+
+        t = Triatleta.get_by_id(int(id))
+
+        c = Comentario.query(Comentario.parent_id == int(id))
+
+        values = {
+            "triatleta": t,
+            "comentarios": c,
+            "usuario": users.get_current_user().email()
+        }
+
+        self.response.write(jinja.render_template("triatleta.html", **values))
+
+
+class Crear_Comentario_Triatleta(webapp2.RequestHandler):
+    def get(self):
+        titulo = self.request.get("titulo")
+        texto = self.request.get("comentario")
+        id_triatleta = self.request.get("triatleta")
+
+        c = Comentario()
+        c.titulo = titulo
+        c.texto = texto
+        c.parent_id = int(id_triatleta)
+        c.fecha = datetime.datetime.now().date()
+        c.autor = users.get_current_user().email()
+        c.put()
+
+        time.sleep(1)
+
+        self.redirect("/triatleta?key=" + id_triatleta)
+
+
+class Valorar_Comentario_Triatleta(webapp2.RequestHandler):
+    def get(self):
+        valoracion = self.request.get("valoracion")
+        id = self.request.get("id")
+        id_comentario = self.request.get("id_comentario")
+
+        c = Comentario.get_by_id(int(id_comentario))
+        c.valoraciones.append(int(valoracion))
+        c.put()
+
+        time.sleep(1)
+
+        self.redirect("/triatleta?key=" + id)
+
+
+class Eliminar_Comentario_Triatleta(webapp2.RequestHandler):
+    def get(self):
+        id = self.request.get("id")
+        id_comentario = self.request.get("key")
+
+        c = Comentario.get_by_id(int(id_comentario))
+        c.key.delete()
+
+        time.sleep(1)
+
+        self.redirect("/triatleta?key=" + id)
+
+
+class Eliminar_Triatleta(webapp2.RequestHandler):
+    def get(self):
+        id_triatleta = self.request.get("key")
+
+        c = Comentario.query(
+            ndb.AND(Comentario.parent_id == int(id_triatleta), Comentario.autor != users.get_current_user().email()))
+
+        if c.count() == 0:
+            t = Triatleta.get_by_id(int(id_triatleta))
+            t.key.delete()
+
+        time.sleep(1)
+
+        self.redirect("/listadoTriatletas")
+
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -168,7 +291,15 @@ app = webapp2.WSGIApplication([
     ('/crear_prueba', Crear_Prueba),
     ('/principal', Principal),
     ('/prueba', getPrueba),
-    ('/nuevo_comentario', Crear_Comentario),
-    ('/valorar_comentario', Valorar_Comentario),
-    ('/eliminar_comentario', Eliminar_Comentario)
+    ('/nuevo_comentario_prueba', Crear_Comentario_Prueba),
+    ('/valorar_comentario_prueba', Valorar_Comentario_Prueba),
+    ('/eliminar_comentario_prueba', Eliminar_Comentario_Prueba),
+    ('/eliminar_prueba', Eliminar_Prueba),
+    ('/nuevo_triatleta', Nuevo_Triatleta),
+    ('/crear_triatleta', Crear_Triatleta),
+    ('/triatleta', getTriatleta),
+    ('/nuevo_comentario_triatleta', Crear_Comentario_Triatleta),
+    ('/valorar_comentario_triatleta', Valorar_Comentario_Triatleta),
+    ('/eliminar_comentario_triatleta', Eliminar_Comentario_Triatleta),
+    ('/eliminar_triatleta', Eliminar_Triatleta)
 ], debug=True)
